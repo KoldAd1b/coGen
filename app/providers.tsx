@@ -17,7 +17,7 @@ if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_ENABLE_POSTHOG) {
 }
 
 export function PostHogProvider({ children }: { children: ReactNode }) {
-  return process.env.NEXT_PUBLIC_ENABLE_POSTHOG ? (
+  return ? (
     <PostHogProviderJS client={posthog}>{children}</PostHogProviderJS>
   ) : (
     children
