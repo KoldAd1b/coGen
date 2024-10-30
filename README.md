@@ -19,8 +19,6 @@ Cogen AI is a powerful AI-driven development tool that revolutionizes the way de
 - Mistral AI: Fast and efficient code generation
 - Together AI: Custom model implementations
 - Fireworks AI: Specialized code optimization
-- Groq: High-performance code processing
-- Ollama: Local model support for offline development
 
 ### 🎭 Developer Personas
 
@@ -34,13 +32,11 @@ Cogen AI is a powerful AI-driven development tool that revolutionizes the way de
 
 ### 🎨 Advanced UI/UX Implementation
 
-- Live code preview with Prismjs syntax highlighting
+- Live code preview
 - Dynamic theming system using next-themes
-- Responsive layouts with Tailwind CSS
-- Radix UI primitive components integration:
+- Layouts with Tailwind CSS
 - Custom dialogs for settings and configurations
 - Dropdown menus for AI provider selection
-- Tooltips for enhanced user guidance
 - Tabs for organizing different code views
 - Auto-resizing textarea for code input using react-textarea-autosize
 
@@ -152,6 +148,65 @@ const ratelimit = new Ratelimit({
 });
 ```
 
+### High Level Architecture
+
+```mermaid
+
+flowchart TB
+
+    subgraph Frontend["Frontend (Next.js)"]
+        UI[/"User Interface"/]
+        ThemeSystem["Theme System\n(next-themes)"]
+        Preview["Live Code Preview"]
+        Input["Code Requirements Input"]
+    end
+
+    subgraph Auth["Authentication"]
+        Supabase["Supabase Auth"]
+        Protected["Protected Routes"]
+    end
+
+    subgraph AIProviders["AI Service Providers"]
+        OpenAI["OpenAI"]
+        Claude["Anthropic Claude"]
+        Gemini["Google Gemini"]
+        Mistral["Mistral AI"]
+        Together["Together AI"]
+        Fireworks["Fireworks AI"]
+    end
+
+    subgraph Backend["Backend Services"]
+        RateLimit["Rate Limiting\n(Upstash)"]
+        KVStore["Vercel KV Storage"]
+        Analytics["PostHog Analytics"]
+    end
+
+    subgraph Frameworks["Code Generation"]
+        Next["Next.js Components"]
+        Streamlit["Streamlit Apps"]
+        Gradio["Gradio Interfaces"]
+        Universal["Framework-Agnostic Code"]
+    end
+
+    UI --> Input
+    Input --> Auth
+    Auth --> RateLimit
+    RateLimit --> AIProviders
+    AIProviders --> Frameworks
+    Frameworks --> Preview
+    Preview --> UI
+    
+    UI <--> ThemeSystem
+    Backend <--> Analytics
+    
+    style Frontend fill:#f9f,stroke:#333,stroke-width:2px
+    style AIProviders fill:#bbf,stroke:#333,stroke-width:2px
+    style Backend fill:#bfb,stroke:#333,stroke-width:2px
+    style Auth fill:#fbf,stroke:#333,stroke-width:2px
+    style Frameworks fill:#ffb,stroke:#333,stroke-width:2px
+
+```
+
 ## 🚀 Getting Started
 
 Clone the repository:
@@ -185,12 +240,18 @@ Start the development server:
 Create a `.env.local` file with the following variables:
 
 ```
-`# E2B API Configuration E2B_API_KEY=your_e2b_api_key
+`# E2B API Configuration
+E2B_API_KEY=your_e2b_api_key
+
 # AI Provider API Keys
 ANTHROPIC_API_KEY=your_anthropic_key
 OPENAI_API_KEY=your_openai_key
 GROQ_API_KEY=your_groq_key
-FIREWORKS_API_KEY=your_fireworks_key TOGETHER_AI_API_KEY=your_together_ai_key GOOGLE_AI_API_KEY=your_google_ai_key GOOGLE_GENERATIVE_AI_API_KEY=your_google_gen_ai_key MISTRAL_API_KEY=your_mistral_key
+FIREWORKS_API_KEY=your_fireworks_key
+TOGETHER_AI_API_KEY=your_together_ai_key
+GOOGLE_AI_API_KEY=your_google_ai_key
+GOOGLE_GENERATIVE_AI_API_KEY=your_google_gen_ai_key
+MISTRAL_API_KEY=your_mistral_key
 
 # Optional Configuration
 NEXT_PUBLIC_SITE_URL=your_site_domain
